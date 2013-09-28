@@ -13,6 +13,11 @@ describe "Grid" do
     expect(grid.cells.size).to eq 1
   end
 
+  it "has birth candidates for next tick" do
+    grid = Grid.new({ p1_1 => true })
+    expect(grid.birth_candidates.size).to eq 8
+  end
+
   it "can tick" do
     grid = Grid.new({ p1_1 => true })
     new_grid = grid.tick

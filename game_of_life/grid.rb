@@ -9,11 +9,7 @@ class Grid
   def tick
     new_grid = Grid.new(@cells)
 
-    @cells.keys.map do |pos1|
-      pos1.neighbours.map do |pos2|
-        new_grid.cells[pos2] = true
-      end
-    end
+    birth_candidates.map{ |pos| new_grid.cells[pos] = true }
 
     new_grid.cells.delete_if do |key, value|
       was_dead = ! @cells.include?(key)
@@ -22,6 +18,11 @@ class Grid
       ( was_dead && alive_neighbours == 3 )
     end
     new_grid
+  end
+
+  def birth_candidates
+    all_neighbours = @cells.keys.map{ |pos| pos.neighbours}
+    all_neighbours.map{ |pos| pos }.flatten
   end
 
 end
