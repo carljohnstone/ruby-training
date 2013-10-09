@@ -1,10 +1,31 @@
 describe "HPBookSet" do
-  it "costs 8EUR for a book" do
+
+  it "prices sets correctly" do
     set = HPBookSet.new
     set.add(:book1)
     expect(set.cost).to eq 800
+    set.add(:book2)
+    expect(set.cost).to eq 1520
+    set.add(:book3)
+    expect(set.cost).to eq 2160
+    set.add(:book4)
+    expect(set.cost).to eq 2560
+    set.add(:book5)
+    expect(set.cost).to eq 3000
   end
 
+end
+
+describe "HPBookSetList" do
+  it "prices two sets correctly" do
+    set1 = HPBookSet.new
+    set1.add(:book1)
+    set2 = HPBookSet.new
+    set2.add(:book2)
+    set2.add(:book3)
+    setlist = HPBookSetList.new([set1, set2])
+    expect(setlist.subtotal).to eq (set1.cost + set2.cost)
+  end
 end
 
 describe "Basket" do
@@ -82,6 +103,19 @@ class HPBookSet
   end
 end
 
+class HPBookSetList
+
+  def initialize(setlist)
+    @setlist = setlist
+  end
+
+  def subtotal
+    @setlist.reduce(0) do | tot, set |
+      tot += set.cost
+    end
+  end
+  
+end
 
 class Basket
 
