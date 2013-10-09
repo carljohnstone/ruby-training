@@ -133,19 +133,16 @@ class Basket
     books_hash.values.max
   end
 
-  def sets
+  def greedy_sets
     sets = Array.new(sets_needed) { HPBookSet.new }
     books_hash.each do |book, count|
       (0...count).each { |i| sets[i].add(book) }
     end
-    sets
+    HPBookSetList.new(sets)
   end
 
   def total
-    total = sets.reduce(0) do | tot, set |
-      tot += set.cost
-    end
-    total / 100.00
+    greedy_sets.subtotal / 100.00
   end
 
 end
