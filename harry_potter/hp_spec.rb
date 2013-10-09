@@ -1,3 +1,12 @@
+describe "HPBookSet" do
+  it "costs 8EUR for a book" do
+    set = HPBookSet.new
+    set.add(:book1)
+    expect(set.cost).to eq 800
+  end
+
+end
+
 describe "Basket" do
 
   it "costs 8EUR for a book" do
@@ -47,6 +56,33 @@ describe "Basket" do
 
 end
 
+class HPBookSet
+
+  def initialize
+    @books = Array.new
+  end
+
+  def add(book)
+    @books.push(book)
+  end
+
+  def cost
+    case
+    when @books.size == 5
+      3000
+    when @books.size == 4
+      2560
+    when @books.size == 3
+      2160
+    when @books.size == 2
+      1520
+    else
+      800
+    end
+  end
+end
+
+
 class Basket
 
   def initialize(books)
@@ -64,28 +100,18 @@ class Basket
   end
 
   def sets
-    sets = Array.new(sets_needed) { Array.new }
+    sets = Array.new(sets_needed) { HPBookSet.new }
     books_hash.each do |book, count|
-      (0...count).each { |i| sets[i].push(book) }
+      (0...count).each { |i| sets[i].add(book) }
     end
     sets
   end
 
   def total
-    sets.reduce(0) do | tot, set |
-      tot + case
-      when set.size == 5
-        30
-      when set.size == 4
-        25.60
-      when set.size == 3
-        21.60
-      when set.size == 2
-        15.20
-      else
-        8
-      end
+    total = sets.reduce(0) do | tot, set |
+      tot += set.cost
     end
+    total / 100.00
   end
 
 end
