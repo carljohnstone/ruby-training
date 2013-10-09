@@ -9,6 +9,11 @@ describe "Bowling" do
     expect(game.total_score).to eq 29
   end
 
+  it "adds on for a strike" do
+    game = Game.new( [10] + [1] * 18 )
+    expect(game.total_score).to eq 30
+  end
+
 end
 
 class Game
