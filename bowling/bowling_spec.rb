@@ -14,6 +14,31 @@ describe "Bowling" do
     expect(game.total_score).to eq 30
   end
 
+  it "adds on for a double strike" do
+    game = Game.new( [10, 10] + [1] * 16 )
+    expect(game.total_score).to eq 49
+  end
+
+  it "adds on for a turkey" do
+    game = Game.new( [10, 10, 10] + [1] * 14 )
+    expect(game.total_score).to eq 77
+  end
+
+  it "deals with a strike in the last frame" do
+    game = Game.new( [1] * 18 + [10, 1, 1] )
+    expect(game.total_score).to eq 30
+  end
+
+  it "deals with a spare in the last frame" do
+    game = Game.new( [1] * 18 + [1,9,1] )
+    expect(game.total_score).to eq 29
+  end
+
+  it "deals with a turkey in the last frame" do
+    game = Game.new( [1] * 18 + [10, 10, 10] )
+    expect(game.total_score).to eq 48
+  end
+
 end
 
 class Game
