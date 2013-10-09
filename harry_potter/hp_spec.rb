@@ -87,6 +87,10 @@ class HPBookSet
     @books.push(book)
   end
 
+  def size
+    @books.size
+  end
+
   def cost
     case
     when @books.size == 5
@@ -141,8 +145,17 @@ class Basket
     HPBookSetList.new(sets)
   end
 
+  def even_sets
+    sets = Array.new(sets_needed) { HPBookSet.new }
+    books_hash.each do |book, count|
+      sets.sort! { |a,b| a.size <=> b.size }
+      (0...count).each { |i| sets[i].add(book) }
+    end
+    HPBookSetList.new(sets)
+  end
+
   def total
-    greedy_sets.subtotal / 100.00
+    [ greedy_sets.subtotal, even_sets.subtotal].min / 100.00
   end
 
 end
