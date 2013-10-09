@@ -137,21 +137,21 @@ class Basket
     books_hash.values.max
   end
 
-  def greedy_sets
+  def sets(sort_routine)
     sets = Array.new(sets_needed) { HPBookSet.new }
     books_hash.each do |book, count|
+      sets.sort! &sort_routine 
       (0...count).each { |i| sets[i].add(book) }
     end
     HPBookSetList.new(sets)
   end
 
+  def greedy_sets
+    sets( lambda { |a,b| b.size <=> a.size } )
+  end
+
   def even_sets
-    sets = Array.new(sets_needed) { HPBookSet.new }
-    books_hash.each do |book, count|
-      sets.sort! { |a,b| a.size <=> b.size }
-      (0...count).each { |i| sets[i].add(book) }
-    end
-    HPBookSetList.new(sets)
+    sets( lambda { |a,b| a.size <=> b.size } )
   end
 
   def total
