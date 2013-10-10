@@ -53,17 +53,11 @@ class Game
     (1..10).each do
       frame = Frame.new( scores.shift )
       if frame.score == 10
-        bonus1 = scores.shift
-        bonus2 = scores.shift
-        frame.add_bonus(bonus1 + bonus2)
-        scores.unshift(bonus2)
-        scores.unshift(bonus1)
+        frame.add_bonus(scores[0] + scores[1])
       else
         frame.add_bowl(scores.shift)
         if frame.score == 10
-          bonus = scores.shift
-          frame.add_bonus(bonus)
-          scores.unshift(bonus)
+          frame.add_bonus(scores[0])
         end
       end
       frames.push(frame)
