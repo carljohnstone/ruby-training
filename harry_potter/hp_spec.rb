@@ -72,7 +72,12 @@ describe "Basket" do
 
   it "costs 59.20 for 3 x the first 2 books, and 1 x rest" do
     basket = Basket.new([:book1, :book1, :book1, :book2, :book2, :book2, :book3, :book4, :book5])
-    expect(basket.total).to eq 51.2
+    expect(basket.total).to eq 60.4
+  end
+
+  it "costs 59.20 for 3 x the first 2 books, and 1 x rest" do
+    basket = Basket.new([:book1, :book1, :book1, :book2, :book2, :book3, :book3, :book4, :book5])
+    expect(basket.total).to eq 59.20
   end
 
 end
@@ -154,8 +159,25 @@ class Basket
     sets( lambda { |a,b| a.size <=> b.size } )
   end
 
+  def prefer_four_book_sets
+    sort = lambda do |a,b|
+      if a.size == 4
+        1
+      elsif b.size == 4
+        -1
+      else
+        b.size <=> a.size
+      end
+    end
+    sets = sets( sort )
+    sets
+  end
+
   def total
-    [ greedy_sets.subtotal, even_sets.subtotal].min / 100.00
+#    [ greedy_sets.subtotal, even_sets.subtotal].min / 100.00
+    [ greedy_sets.subtotal, prefer_four_book_sets.subtotal].min / 100.00
+#    [ even_sets.subtotal, prefer_four_book_sets.subtotal].min / 100.00
+#    [ greedy_sets.subtotal, even_sets.subtotal, prefer_four_book_sets.subtotal].min / 100.00
   end
 
 end
@@ -171,9 +193,8 @@ end
 
 # a b c a b d a b e
 # 5 + 2 + 2 = 30 + 15.2 + 15.2 = 60.40
-# 5 + 3 + 1 = 30 + 21.6 + 8 = 59.60
-# 4 + 4 + 1 = 25.60 + 25.60 + 8 = 59.20
 # 4 + 3 + 2 = 25.60 + 21.60 + 15.2 = 62.40
 # 3 + 3 + 3 = 21.6 +21.6 + 21.6 = 64.8
 
-
+# a a a b b c c d e
+# 4 + 4 + 1
